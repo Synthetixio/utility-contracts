@@ -1,4 +1,7 @@
 # utility-contracts
+
+[![Build Status](https://travis-ci.com/Havven/utility-contracts.svg?branch=master)](https://travis-ci.com/Havven/utility-contracts)
+
 A collection of useful smart contract components.
 
 ## Contents
