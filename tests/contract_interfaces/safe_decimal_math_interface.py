@@ -17,4 +17,6 @@ class SafeDecimalMathInterface:
         self.divIsSafe = lambda x, y: self.contract.functions.pubDivIsSafe(x, y).call()
         self.safeDiv = lambda x, y: self.contract.functions.pubSafeDiv(x, y).call()
         self.safeDiv_dec = lambda x, y: self.contract.functions.pubSafeDiv_dec(x, y).call()
+        self.min = lambda x, y: self.contract.functions.pubMin(x, y).call()
+        self.max = lambda x, y: self.contract.functions.pubMax(x, y).call()
         self.intToDec = lambda i: self.contract.functions.pubIntToDec(i).call()

@@ -4,24 +4,21 @@ FILE INFORMATION
 -----------------------------------------------------------------
 
 file:       SafeDecimalMath.sol
-version:    1.0
+version:    1.1
 author:     Anton Jurisevic
 
-date:       2018-2-5
-
-checked:    Mike Spain
-approved:   Samuel Brooks
+date:       2018-6-22
 
 -----------------------------------------------------------------
 MODULE DESCRIPTION
 -----------------------------------------------------------------
 
-A fixed point decimal library that provides basic mathematical
-operations, and checks for unsafe arguments, for example that
-would lead to overflows.
+An unsigned fixed point decimal library that provides basic
+mathematical operations, and checks for unsafe arguments, for
+example that would lead to overflows.
 
-Exceptions are thrown whenever those unsafe operations
-occur.
+Reverts whenever those unsafe operations occur. We revert
+instead of throwing to be more forgiving about consumed gas.
 
 -----------------------------------------------------------------
 */
@@ -179,8 +176,31 @@ contract SafeDecimalMath {
         /* Reintroduce the UNIT factor that will be divided out by y. */
         return safeDiv(safeMul(x, UNIT), y);
     }
+    
+    /**
+     * @return The smaller operand.
+     */
+    function min(uint x, uint y)
+        pure
+        internal
+        returns (uint)
+    {
+        return x < y ? x : y;
+    }
 
     /**
+     * @return The larger operand.
+     */
+    function max(uint x, uint y)
+        pure
+        internal
+        returns (uint)
+    {
+        return x > y ? x : y;
+    }
+
+    /**
+     * @return The operand multiplied by UNIT.
      * @dev Convert an unsigned integer to a unsigned fixed-point decimal.
      * Throw an exception if the result would be out of range.
      */
@@ -192,3 +212,4 @@ contract SafeDecimalMath {
         return safeMul(i, UNIT);
     }
 }
+

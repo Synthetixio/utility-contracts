@@ -86,6 +86,22 @@ contract PublicMath is SafeDecimalMath {
     {
         return safeDiv_dec(x, y);
     }
+    
+    function pubMin(uint x, uint y)
+        pure
+        public
+        returns (uint)
+    {
+        return min(x, y);
+    }   
+
+    function pubMax(uint x, uint y)
+        pure
+        public
+        returns (uint)
+    {
+        return max(x, y);
+    }   
 
     function pubIntToDec(uint i)
         pure

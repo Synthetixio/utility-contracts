@@ -173,7 +173,7 @@ class TestSafeDecimalMath(HavvenTestCase):
         self.assertReverts(self.safeDecMath.safeMul, 2**254, 5)
 
     # Test safeMul_dec function
-    def testSafeMul_dec(self):
+    def test_SafeMul_dec(self):
         self.assertEqual(self.safeDecMath.safeMul_dec(99999 * UNIT, 777777 * UNIT), 99999 * 777777 * UNIT)
         self.assertEqual(self.safeDecMath.safeMul_dec(10 * UNIT, UNIT + UNIT), 20 * UNIT)
         self.assertEqual(self.safeDecMath.safeMul_dec(2**256 // UNIT, UNIT), 2**256 // UNIT)
@@ -200,23 +200,23 @@ class TestSafeDecimalMath(HavvenTestCase):
         # Rounding occurs towards zero
         self.assertEqual(self.safeDecMath.safeMul_dec(UNIT + 1, UNIT - 1), UNIT-1)
 
-    def testUnsafeMul_dec(self):
+    def test_UnsafeMul_dec(self):
         self.assertReverts(self.safeDecMath.safeMul, 2**255, 2)
         self.assertReverts(self.safeDecMath.safeMul, 2**200, 2**56)
         self.assertReverts(self.safeDecMath.safeMul, 2**200, 3**40)
 
     # Test divIsSafe function
-    def testDivIsSafe(self):
+    def test_DivIsSafe(self):
         self.assertTrue(self.safeDecMath.divIsSafe(1, 1))
         self.assertTrue(self.safeDecMath.divIsSafe(2**256 - 1, 2**256 - 1))
         self.assertTrue(self.safeDecMath.divIsSafe(100, 10*20))
 
-    def testDivIsUnsafe(self):
+    def test_DivIsUnsafe(self):
         self.assertFalse(self.safeDecMath.divIsSafe(1, 0))
         self.assertFalse(self.safeDecMath.divIsSafe(2**256 - 1, 0))
 
     # Test safeDiv function
-    def testSafeDiv(self):
+    def test_SafeDiv(self):
         self.assertEqual(self.safeDecMath.safeDiv(0, 1), 0)
         self.assertEqual(self.safeDecMath.safeDiv(1, 1), 1)
         self.assertEqual(self.safeDecMath.safeDiv(1, 2), 0)
@@ -226,13 +226,13 @@ class TestSafeDecimalMath(HavvenTestCase):
         self.assertEqual(self.safeDecMath.safeDiv(999, 2), 499)
         self.assertEqual(self.safeDecMath.safeDiv(1000, 7), 142)
 
-    def testUnsafeDiv(self):
+    def test_UnsafeDiv(self):
         self.assertReverts(self.safeDecMath.safeDiv, 0, 0)
         self.assertReverts(self.safeDecMath.safeDiv, 1, 0)
         self.assertReverts(self.safeDecMath.safeDiv, 2**256 - 1, 0)
 
     # Test safeDiv_dec function
-    def testSafeDiv_dec(self):
+    def test_SafeDiv_dec(self):
         self.assertEqual(self.safeDecMath.safeDiv_dec(4 * UNIT, 2 * UNIT), 2 * UNIT)
         self.assertEqual(self.safeDecMath.safeDiv_dec(UNIT, 2 * UNIT), UNIT // 2)
         self.assertEqual(self.safeDecMath.safeDiv_dec(10**8 * UNIT, 3 * UNIT), (10**8 * UNIT) // 3)
@@ -265,7 +265,7 @@ class TestSafeDecimalMath(HavvenTestCase):
         self.assertEqual(self.safeDecMath.safeDiv_dec(0, UNIT), 0)
         self.assertEqual(self.safeDecMath.safeDiv_dec(0, 1), 0)
 
-    def testUnsafeDiv_dec(self):
+    def test_UnsafeDiv_dec(self):
         # Numerator overflows
         self.assertReverts(self.safeDecMath.safeDiv_dec, 2**256 - 1, 1)
         self.assertReverts(self.safeDecMath.safeDiv_dec, 2**256 // UNIT + 1, 1)
@@ -280,8 +280,49 @@ class TestSafeDecimalMath(HavvenTestCase):
         # Both
         self.assertReverts(self.safeDecMath.safeDiv_dec, 2**256 - 1, 0)
 
-    # Test intToDec function
-    def testIntToDec(self):
+    def test_min(self):
+        # zero element
+        self.assertEqual(self.safeDecMath.min(0, 1), 0)
+        self.assertEqual(self.safeDecMath.min(0, 2**256 - 1), 0)
+
+        # max element
+        self.assertEqual(self.safeDecMath.min(1, 2**256 - 1), 1)
+        self.assertEqual(self.safeDecMath.min(2**256 - 2, 2**256 - 1), 2**256 - 2)
+
+        # idempotency
+        self.assertEqual(self.safeDecMath.min(0, 0), 0)
+        self.assertEqual(self.safeDecMath.min(1, 1), 1)
+        self.assertEqual(self.safeDecMath.min(2**256 - 1, 2**256 - 1), 2**256 - 1)
+    
+        # commutativity
+        x, y = 1, 2
+        self.assertEqual(self.safeDecMath.min(x, y), self.safeDecMath.min(y, x))
+
+        # Generic test
+        self.assertEqual(self.safeDecMath.min(10, 100), 10)
+
+    def test_max(self):
+        # zero element
+        self.assertEqual(self.safeDecMath.max(0, 1), 1)
+        self.assertEqual(self.safeDecMath.max(0, 2**256 - 1), 2**256 - 1)
+
+        # max element
+        self.assertEqual(self.safeDecMath.max(1, 2**256 - 1), 2**256 - 1)
+        self.assertEqual(self.safeDecMath.max(2**256 - 2, 2**256 - 1), 2**256 - 1)
+
+        # idempotency
+        self.assertEqual(self.safeDecMath.max(0, 0), 0)
+        self.assertEqual(self.safeDecMath.max(1, 1), 1)
+        self.assertEqual(self.safeDecMath.max(2**256 - 1, 2**256 - 1), 2**256 - 1)
+    
+        # commutativity
+        x, y = 1, 2
+        self.assertEqual(self.safeDecMath.max(x, y), self.safeDecMath.max(y, x))
+
+        # Generic test
+        self.assertEqual(self.safeDecMath.max(10, 100), 100)
+
+    def test_IntToDec(self):
         self.assertEqual(self.safeDecMath.intToDec(1), UNIT)
         self.assertEqual(self.safeDecMath.intToDec(100), 100*UNIT)
         self.assertEqual(self.safeDecMath.intToDec(UNIT), UNIT * UNIT)
@@ -291,16 +332,18 @@ class TestSafeDecimalMath(HavvenTestCase):
         self.assertReverts(self.safeDecMath.intToDec, 2**256 // UNIT + 1)
 
     # Test combined arithmetic
-    def testArithmeticExpressions(self):
-        self.assertEqual(
-            self.safeDecMath.safeSub(self.safeDecMath.safeAdd(
+    def test_ArithmeticExpressions(self):
+        # Should equal 0
+        a = self.safeDecMath.safeSub(self.safeDecMath.safeAdd(
                 UNIT, self.safeDecMath.safeDiv_dec(
                     self.safeDecMath.safeDiv(self.safeDecMath.safeAdd(UNIT, UNIT), 2), UNIT
-                )), self.safeDecMath.safeMul_dec(2 * UNIT, UNIT)),
-            0)
+                )), self.safeDecMath.safeMul_dec(2 * UNIT, UNIT))
+        a_res = 0
+        
+        # Should equal 8 * UNIT
+        b = self.safeDecMath.safeDiv_dec(self.safeDecMath.safeMul_dec(self.safeDecMath.safeAdd(
+                self.safeDecMath.intToDec(1), UNIT), self.safeDecMath.safeMul(2, UNIT)), UNIT // 2)
+        b_res = self.safeDecMath.intToDec(8)
 
-        self.assertEqual(
-            self.safeDecMath.safeDiv_dec(self.safeDecMath.safeMul_dec(self.safeDecMath.safeAdd(
-                self.safeDecMath.intToDec(1), UNIT), self.safeDecMath.safeMul(2, UNIT)), UNIT // 2),
-            self.safeDecMath.intToDec(8)
-        )
+        self.assertEqual(self.safeDecMath.min(a, b), a_res)
+        self.assertEqual(self.safeDecMath.max(a, b), b_res)
