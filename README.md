@@ -3,7 +3,9 @@ A collection of useful smart contract components.
 
 ## Contents
 
-* `contracts/LimitedSetup`: Allows contract functions to operate only during a setup period.
+Smart contracts can be found in the `contracts/` directory and include the following:
+
+* `LimitedSetup`: Allows contract functions to operate only during a setup period.
 * `Owned`: A contract with a privileged owner.
 * `Pausable`: Provides the ability to pause contract functions. 
 * `SafeDecimalMath`: Safe manipulation of unsigned fixed point decimal numbers.
