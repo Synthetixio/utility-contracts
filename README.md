@@ -21,7 +21,7 @@ The testing scripts require Python 3.6+, [web3.py](https://github.com/ethereum/w
 
 ```pip3 install -r requirements.txt```
 
-In addition [solc](https://github.com/ethereum/solidity) 0.4.24+ must be installed. The test suite uses [ganache](https://github.com/trufflesuite/ganache-cli) 6.1.0+ for execution speed, state snapshots, and time fast-forwarding. It can be installed from the node package manager with. The tests need :
+In addition [solc](https://github.com/ethereum/solidity) 0.4.24+ must be installed. The test suite uses [ganache](https://github.com/trufflesuite/ganache-cli) 6.1.0+ for execution speed, state snapshots, and time fast-forwarding. It can be installed from the node package manager with:
 
 ```npm install ganache-cli```
 
