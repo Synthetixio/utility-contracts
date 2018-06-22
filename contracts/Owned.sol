@@ -19,8 +19,8 @@ Requires its owner to be explicitly set in the constructor.
 Provides onlyOwner and onlyNominatedOwner access modifiers.
 
 To change owners, the current owner must nominate the next
-owner, who must then accept the nomination. An unaccepted
-nomination can be cancelled by nominating another address.
+owner, who must then accept the nomination. A pending
+nomination can be cancelled by nominating another address.  
 
 -----------------------------------------------------------------
 */
